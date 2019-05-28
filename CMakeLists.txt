@@ -9,7 +9,10 @@ MESSAGE("Build type: " ${CMAKE_BUILD_TYPE})
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}  -Wall  -O3 -march=native ")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall   -O3 -march=native")
-
+set(CUDA_TOOLKIT_ROOT_DIR /usr/local/cuda-9.2/)
+#set(OpenCV_DIR /home/saurav/local/installation/OpenCV-master/lib/cmake/opencv4)
+#set(CMAKE_PREFIX_PATH /home/saurav/local/)
+set(CMAKE_PREFIX_PATH /home/saurav/opencv3.4/)
 # Check C++11 or C++0x support
 include(CheckCXXCompilerFlag)
 CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
@@ -28,7 +31,7 @@ endif()
 
 LIST(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake_modules)
 
-find_package(OpenCV 3.0 QUIET)
+find_package(OpenCV 3.4.0 QUIET)
 if(NOT OpenCV_FOUND)
    find_package(OpenCV 2.4.3 QUIET)
    if(NOT OpenCV_FOUND)
@@ -74,6 +77,8 @@ target_link_libraries(${PROJECT_NAME}
 ${OpenCV_LIBS}
 ${EIGEN3_LIBS}
 ${Pangolin_LIBRARIES}
+#        /media/saurav/Data/repos/slams/ORB_SLAM2/Thirdparty/DBoW2/lib/libDBoW2.so
+#        /media/saurav/Data/repos/slams/ORB_SLAM2/Thirdparty/g2o/lib/libg2o.so
 ${PROJECT_SOURCE_DIR}/Thirdparty/DBoW2/lib/libDBoW2.so
 ${PROJECT_SOURCE_DIR}/Thirdparty/g2o/lib/libg2o.so
 )
@@ -96,6 +101,10 @@ add_executable(stereo_euroc
 Examples/Stereo/stereo_euroc.cc)
 target_link_libraries(stereo_euroc ${PROJECT_NAME})
 
+add_executable(stereo_cranfield
+        Examples/Stereo/stereo_cranfield.cc)
+target_link_libraries(stereo_cranfield ${PROJECT_NAME})
+
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/Examples/Monocular)
 
@@ -111,3 +120,6 @@ add_executable(mono_euroc
 Examples/Monocular/mono_euroc.cc)
 target_link_libraries(mono_euroc ${PROJECT_NAME})
 
+add_executable(mono_cranfield
+        Examples/Monocular/mono_cranfield.cpp)
+target_link_libraries(mono_cranfield ${PROJECT_NAME})
