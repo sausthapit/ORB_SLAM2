@@ -108,6 +108,8 @@ protected:
     std::vector<float> mvInvScaleFactor;    
     std::vector<float> mvLevelSigma2;
     std::vector<float> mvInvLevelSigma2;
+
+    cv::Ptr<cv::FeatureDetector> featureDetector;
 };
 
 } //namespace ORB_SLAM

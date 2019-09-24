@@ -467,6 +467,7 @@ ORBextractor::ORBextractor(int _nfeatures, float _scaleFactor, int _nlevels,
         umax[v] = v0;
         ++v0;
     }
+    this->featureDetector=cv::GFTTDetector::create(nfeatures,0.01,1,3,false,0.04);
 }
 
 static void computeOrientation(const Mat& image, vector<KeyPoint>& keypoints, const vector<int>& umax)
@@ -806,14 +807,15 @@ void ORBextractor::ComputeKeyPointsOctTree(vector<vector<KeyPoint> >& allKeypoin
                     maxX = maxBorderX;
 
                 vector<cv::KeyPoint> vKeysCell;
-                FAST(mvImagePyramid[level].rowRange(iniY,maxY).colRange(iniX,maxX),
-                     vKeysCell,iniThFAST,true);
-
-                if(vKeysCell.empty())
-                {
-                    FAST(mvImagePyramid[level].rowRange(iniY,maxY).colRange(iniX,maxX),
-                         vKeysCell,minThFAST,true);
-                }
+                this->featureDetector->detect(mvImagePyramid[level].rowRange(iniY,maxY).colRange(iniX,maxX),vKeysCell,noArray());
+//                FAST(mvImagePyramid[level].rowRange(iniY,maxY).colRange(iniX,maxX),
+//                     vKeysCell,iniThFAST,true);
+//
+//                if(vKeysCell.empty())
+//                {
+//                    FAST(mvImagePyramid[level].rowRange(iniY,maxY).colRange(iniX,maxX),
+//                         vKeysCell,minThFAST,true);
+//                }
 
                 if(!vKeysCell.empty())
                 {
